@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "serve:micro": "vue-cli-service serve --mode micro",
+    "serve": "set NODE_OPTIONS=--openssl-legacy-provider && vue-cli-service serve",
+    "serve:micro": "set NODE_OPTIONS=--openssl-legacy-provider && vue-cli-service serve --mode micro1",
     "build": "vue-cli-service build --mode buildMicro"
   },
   "dependencies": {
