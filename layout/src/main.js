@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
-// import { registerApplication, start } from 'single-spa'
-import { registerApplication, start } from '../../lyn-single-spa'
+import { registerApplication, start } from 'single-spa'
+// import { registerApplication, start } from '../../lyn-single-spa'
 
 Vue.config.productionTip = false
 

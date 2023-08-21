@@ -2,8 +2,13 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import singleSpaVue from 'single-spa-vue'
+import singleSpaLeakedGlobals from 'single-spa-leaked-globals';
 
 Vue.config.productionTip = false
+window.a = 21;
+const leakedGlobalsLifecycles = singleSpaLeakedGlobals({
+  globalVariableNames: ['a'],
+})
 
 const appOptions = {
   el: '#microApp',
@@ -23,21 +28,29 @@ const vueLifecycle = singleSpaVue({
   appOptions
 })
 
-export function bootstrap (props) {
-  console.log('app1 bootstrap')
-  // return 
-  return vueLifecycle.bootstrap(() => {})
-}
+export const bootstrap = [
+  leakedGlobalsLifecycles.bootstrap,
+  (props) => {
+    console.log('app1 bootstrap')
+    // return 
+    return vueLifecycle.bootstrap(() => {})
+  }
+] 
 
-export function mount (props) {
-  console.log('app1 mount')
+export const mount = [
+  leakedGlobalsLifecycles.mount,
+  (props) => {
+    console.log('app1 mount')
+    // 简单的描述了 mount 方法的实现机制
+    // return new Vue(appOptions)
+    return vueLifecycle.mount(() => {})
+  }
+] 
 
-  // 简单的描述了 mount 方法的实现机制
-  return new Vue(appOptions)
-  return vueLifecycle.mount(() => {})
-}
-
-export function unmount (props) {
-  console.log('app1 unmount')
-  return vueLifecycle.unmount(() => {})
-}
+export const unmount = [
+  leakedGlobalsLifecycles.unmount,
+  (props) => {
+    console.log('app1 unmount')
+    return vueLifecycle.unmount(() => {})
+  }
+] 
